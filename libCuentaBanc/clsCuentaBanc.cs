@@ -8,5 +8,11 @@ namespace libCuentaBanc
 {
     public class clsCuentaBanc
     {
+        protected int intNroCta;
+        protected string strFecCreac;
+        protected int intTipoDoc;
+        protected int intNroDcto;
+        protected string strTitular;
+
     }
 }
