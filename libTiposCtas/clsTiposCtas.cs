@@ -8,6 +8,6 @@ namespace libTiposCtas
 {
     public class clsTiposCtas
     {
-        //Punto 4
+        //Punto 4.2
     }
 }
