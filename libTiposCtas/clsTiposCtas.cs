@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace libTiposCtas
 {
-    public class Class1
+    public class clsTiposCtas
     {
+        //Punto 4
     }
 }
