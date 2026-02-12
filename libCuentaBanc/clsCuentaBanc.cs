@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace libCuentaBanc
 {
+    // Este es un comentario para saber si si funciona hacer los cambios en proyectos diferentes
     public abstract class clsCuenta
     {
         #region Atributos
