@@ -92,13 +92,36 @@ namespace libTiposCtas
         #region Metodos privados
         private bool Validar()
         {
-            if (strFecCreac == null) return false;
-            if (intTipoDoc <= 0) return false;
-            if (intNroDcto <= 0) return false;
-            if (strTitular == null) return false;
-            if (fltSaldo <= 0) return false;
-            if (intTipoAhor <= 0) return false;
-            if (fltporcInt <= 0) return false;
+            if (intTipoDoc <= 0)
+            {
+                strError = "El tipo de documento es incorrecto";
+                return false;
+            }
+            if (intNroDcto <= 0)
+            {
+                strError = "El número de documento es incorrecto";
+                return false;
+            }
+            if (strTitular.Trim() == "")
+            {
+                strError = "El titular es incorrecto";
+                return false;
+            }
+            if (fltSaldo <= 0)
+            {
+                strError = "El saldo es incorrecto";
+                return false;
+            }
+            if (intTipoAhor <= 0)
+            {
+                strError = "El tipo de ahorro es incorrecto";
+                return false;
+            }
+            if (fltporcInt <= 0 || fltporcInt > 50)
+            {
+                strError = "El porcentaje de interes no pude ser menor a 0 ni superior a 50";
+                return false;
+            }
 
             return true;
         }
@@ -187,12 +210,31 @@ namespace libTiposCtas
         #region Metodos privados
         private bool Validar()
         {
-            if (strFecCreac == null) return false;
-            if (intTipoDoc <= 0) return false;
-            if (intNroDcto <= 0) return false;
-            if (strTitular == null) return false;
-            if (fltSaldo <= 0) return false;
-            if (fltLimSobreGiro <= 0) return false;
+            if (intTipoDoc <= 0)
+            {
+                strError = "El tipo de documento es incorrecto";
+                return false;
+            }
+            if (intNroDcto <= 0)
+            {
+                strError = "El número de documento es incorrecto";
+                return false;
+            }
+            if (strTitular.Trim() == "")
+            {
+                strError = "El titular es incorrecto";
+                return false;
+            }
+            if (fltSaldo <= 0)
+            {
+                strError = "El saldo es incorrecto";
+                return false;
+            }
+            if (fltLimSobreGiro <= 0)
+            {
+                strError = "El saldo es incorrecto";
+                return false;
+            }
             if (strRepresLeg == null) return false;
 
             return true;
