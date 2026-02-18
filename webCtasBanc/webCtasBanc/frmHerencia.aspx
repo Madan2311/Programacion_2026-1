@@ -154,25 +154,25 @@
                 <tr>
                     <td style="width: 75%">&nbsp;</td>
                     <td>
-                        <asp:Button ID="btnCrear" runat="server" Text="Nuevo" />
+                        <asp:Button ID="btnCrear" runat="server" Text="Nuevo" OnClick="btnCrear_Click" />
                     </td>
                 </tr>
                 <tr>
                     <td class="auto-style3">
-                        <asp:RadioButtonList ID="rblCuentas" runat="server" RepeatDirection="Horizontal" Width="80%">
+                        <asp:RadioButtonList ID="rblCuentas" runat="server" RepeatDirection="Horizontal" Width="80%" AutoPostBack="True" OnSelectedIndexChanged="rblCuentas_SelectedIndexChanged">
                             <asp:ListItem Selected="True" Value="opcAho">Ahorros</asp:ListItem>
                             <asp:ListItem Value="opcCte">Corriente</asp:ListItem>
                             <asp:ListItem Value="opcCdt">CDT</asp:ListItem>
                         </asp:RadioButtonList>
                     </td>
                     <td class="auto-style3">
-                        <asp:Button ID="btnConsultar" runat="server" Text="Consultar" />
+                        <asp:Button ID="btnConsultar" runat="server" Text="Consultar" OnClick="btnConsultar_Click" />
                     </td>
                 </tr>
                 <tr>
                     <td>&nbsp;</td>
                     <td>
-                        <asp:Button ID="btnLimpiar" runat="server" Text="Limpiar" />
+                        <asp:Button ID="btnLimpiar" runat="server" Text="Limpiar" OnClick="btnLimpiar_Click" />
                     </td>
                 </tr>
                 <tr>
@@ -201,10 +201,10 @@
                                         <asp:TextBox ID="txtNroCta" runat="server" ReadOnly="True" CssClass="auto-style27"></asp:TextBox>
                                     </td>
                                     <td class="auto-style20">
-                                        <asp:Label ID="lblFecCreac" runat="server" Text="Fecha Creación:" CssClass="auto-style27"></asp:Label>
+                                        <asp:Label ID="label" runat="server" Text="Fecha Creación:" CssClass="auto-style27"></asp:Label>
                                     </td>
                                     <td class="auto-style11">
-                                        <asp:TextBox ID="txtFecCreac" runat="server" CssClass="auto-style27"></asp:TextBox>
+                                        <asp:Label ID="lblFecCreac" runat="server" BorderColor="#006666" BorderWidth="1px" Text="."></asp:Label>
                                     </td>
                                 </tr>
                                 <tr>
