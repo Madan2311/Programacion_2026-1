@@ -58,34 +58,130 @@ namespace libTiposCtas
         #region Metodos publicos
         public override bool Buscar(int nroCta)
         {
-            if (nroCta == 0)
-                return false;
+            try
+            {
+                if (nroCta <= 0)
+                {
+                    strError = "Número de cuenta nó válido";
+                    return false;
+                }
+                clsGenerales og = new clsGenerales();
+                List<string> datos = og.leerArchivo(rutaFile, nroCta);
+                if (datos.Count <= 0 )
+                {
+                    strError = "No se encontró la cuenta de ahorros #" + nroCta;
+                    og = null;
+                    return false;
+                }
+                strFecCreac = datos[1];
+                intTipoDoc = int.Parse(datos[2]);
+                intNroCta = int.Parse(datos[3]);
+                strTitular = datos[4];
+                fltSaldo = float.Parse(datos[5]);
+                intTipoAhor = int.Parse(datos[6]);
+                fltporcInt = float.Parse(datos[7]);
 
-            return true;
+                return true;
+            }
+            catch
+            {
+
+                strError = "Error en consultar la cuenta de ahorros";
+                return false;
+            }
         }
         public override bool Crear()
         {
             if (!Validar())
                 return false;
+            try
+            {
+                clsGenerales og = new clsGenerales();
+                intNroCta = og.UltimoId(rutaFile) + 1;
+                if (intNroCta <= 0)
+                {
+                    strError = "Error en consultar cuenta de ahorros";
+                    return false;
+                }
+                strFecCreac = DateTime.Now.ToShortDateString();
+                string rgtro = intNroCta + ":" + strFecCreac + ":" + intTipoDoc + ":" + intNroDcto + ":" +
+                    strTitular + ":" + fltSaldo.ToString() + ":" + intTipoAhor + ":" + fltporcInt;
 
-            return true;
+                StreamWriter grabar = new StreamWriter(rutaFile, true);
+                grabar.WriteLine(rgtro);
+                grabar.Close();
+                return true;
+            }
+            catch (Exception)
+            {
+
+                strError = "Error en grabar";
+                return false;
+            }
         }
         public override bool Deposito(int nroCta, float valor)
         {
-            if (nroCta < 0)
-                return false;
+            bool encontrado = false;
+            float saldoAct, newSaldo;
 
-            if (valor < 0)
-                return false;
-
-            return true;
+            List<string> lineas = File.ReadAllLines(rutaFile).ToList();
+            for (int i = 0; i < lineas.Count(); i++)
+            {
+                string[] campos = lineas[i].Split(':');
+                if (campos.Length > 0 && campos[0].Equals(nroCta.ToString()))
+                {
+                    saldoAct = Convert.ToSingle(campos[5]);
+                    if (saldoAct >= valor)
+                    {
+                        newSaldo = saldoAct + valor;
+                        string newRgro = campos[0] + ":" + campos[1] + ":" + campos[2] + ":" + campos[3] + ":" +
+                            campos[4] + ":" + newSaldo + ":" + campos[6] + ":" + campos[7];
+                        lineas[i] = newRgro;
+                        File.WriteAllLines(rutaFile, lineas);
+                        encontrado = true;
+                        break;
+                    }
+                    else
+                        strError = "Saldo insuficiente en la cuenta #" + nroCta;
+                }
+            }
+            if (!encontrado)
+            {
+                strError = "No se emcontró la cuenta #" + nroCta;
+            }
+            return encontrado;
         }
         public override bool Retiro(int nroCta, float valor)
         {
-            if ((nroCta <= 0) || (valor <= 0))
-                return false;
+            bool encontrado = false;
+            float saldoAct, newSaldo;
 
-            return true;
+            List<string> lineas = File.ReadAllLines(rutaFile).ToList();
+            for ( int i = 0; i < lineas.Count(); i ++)
+            {
+                string[] campos = lineas[i].Split(':');
+                if (campos.Length > 0 && campos[0].Equals(nroCta.ToString()))
+                {
+                    saldoAct = Convert.ToSingle(campos[5]);
+                    if (saldoAct >= valor)
+                    {
+                        newSaldo = saldoAct - valor;
+                        string newRgro = campos[0] + ":" + campos[1] + ":" + campos[2] + ":" + campos[3] + ":" + 
+                            campos[4] + ":" + newSaldo + ":" + campos[6] + ":" + campos[7];
+                        lineas[i] = newRgro;
+                        File.WriteAllLines(rutaFile, lineas);
+                        encontrado = true;
+                        break;
+                    }
+                    else
+                        strError = "Saldo insuficiente en la cuenta #" + nroCta;
+                }
+            }
+            if (!encontrado)
+            {
+                strError = "No se emcontró la cuenta #" + nroCta;
+            }
+            return encontrado;
         }
         #endregion
 
@@ -176,34 +272,130 @@ namespace libTiposCtas
         #region Metodos publicos
         public override bool Buscar(int nroCta)
         {
-            if (nroCta == 0)
-                return false;
+            try
+            {
+                if (nroCta <= 0)
+                {
+                    strError = "Número de cuenta nó válido";
+                    return false;
+                }
+                clsGenerales og = new clsGenerales();
+                List<string> datos = og.leerArchivo(rutaFile, nroCta);
+                if (datos.Count <= 0)
+                {
+                    strError = "No se encontró la cuenta corriente #" + nroCta;
+                    og = null;
+                    return false;
+                }
+                strFecCreac = datos[1];
+                intTipoDoc = int.Parse(datos[2]);
+                intNroCta = int.Parse(datos[3]);
+                strTitular = datos[4];
+                fltSaldo = float.Parse(datos[5]);
+                fltLimSobreGiro = float.Parse(datos[6]);
+                strRepresLeg = datos[7];
 
-            return true;
+                return true;
+            }
+            catch
+            {
+
+                strError = "Error en consultar la cuenta corriente";
+                return false;
+            }
         }
         public override bool Crear()
         {
             if (!Validar())
                 return false;
+            try
+            {
+                clsGenerales og = new clsGenerales();
+                intNroCta = og.UltimoId(rutaFile) + 1;
+                if (intNroCta <= 0)
+                {
+                    strError = "Error en consultar cuenta corriente";
+                    return false;
+                }
+                strFecCreac = DateTime.Now.ToShortDateString();
+                string rgtro = intNroCta + ":" + strFecCreac + ":" + intTipoDoc + ":" + intNroDcto + ":" +
+                    strTitular + ":" + fltSaldo.ToString() + ":" + fltLimSobreGiro + ":" + strRepresLeg;
 
-            return true;
+                StreamWriter grabar = new StreamWriter(rutaFile, true);
+                grabar.WriteLine(rgtro);
+                grabar.Close();
+                return true;
+            }
+            catch (Exception)
+            {
+
+                strError = "Error en grabar";
+                return false;
+            }
         }
         public override bool Deposito(int nroCta, float valor)
         {
-            if (nroCta < 0)
-                return false;
+            bool encontrado = false;
+            float saldoAct, newSaldo;
 
-            if (valor < 0)
-                return false;
-
-            return true;
+            List<string> lineas = File.ReadAllLines(rutaFile).ToList();
+            for (int i = 0; i < lineas.Count(); i++)
+            {
+                string[] campos = lineas[i].Split(':');
+                if (campos.Length > 0 && campos[0].Equals(nroCta.ToString()))
+                {
+                    saldoAct = Convert.ToSingle(campos[5]);
+                    if (saldoAct >= valor)
+                    {
+                        newSaldo = saldoAct + valor;
+                        string newRgro = campos[0] + ":" + campos[1] + ":" + campos[2] + ":" + campos[3] + ":" +
+                            campos[4] + ":" + newSaldo + ":" + campos[6] + ":" + campos[7];
+                        lineas[i] = newRgro;
+                        File.WriteAllLines(rutaFile, lineas);
+                        encontrado = true;
+                        break;
+                    }
+                    else
+                        strError = "Saldo insuficiente en la cuenta #" + nroCta;
+                }
+            }
+            if (!encontrado)
+            {
+                strError = "No se emcontró la cuenta #" + nroCta;
+            }
+            return encontrado;
         }
         public override bool Retiro(int nroCta, float valor)
         {
-            if ((nroCta <= 0) || (valor <= 0))
-                return false;
+            bool encontrado = false;
+            float saldoAct, newSaldo;
 
-            return true;
+            List<string> lineas = File.ReadAllLines(rutaFile).ToList();
+            for ( int i = 0; i < lineas.Count(); i ++)
+            {
+                string[] campos = lineas[i].Split(':');
+                if (campos.Length > 0 && campos[0].Equals(nroCta.ToString()))
+                {
+                    saldoAct = Convert.ToSingle(campos[5]);
+                    if (saldoAct >= valor)
+                    {
+                        newSaldo = saldoAct - valor;
+                        string newRgro = campos[0] + ":" + campos[1] + ":" + campos[2] + ":" + campos[3] + ":" + 
+                            campos[4] + ":" + newSaldo + ":" + campos[6] + ":" + campos[7];
+                        lineas[i] = newRgro;
+                        File.WriteAllLines(rutaFile, lineas);
+                        encontrado = true;
+                        break;
+                    }
+                    else
+                        strError = "Saldo insuficiente en la cuenta #" + nroCta;
+                }
+            }
+            if (!encontrado)
+            {
+                strError = "No se emcontró la cuenta #" + nroCta;
+            }
+            return encontrado;
         }
         #endregion
 
@@ -212,30 +404,35 @@ namespace libTiposCtas
         {
             if (intTipoDoc <= 0)
             {
-                strError = "El tipo de documento es incorrecto";
+                strError = "El tipo de documento no es valido";
                 return false;
             }
+
             if (intNroDcto <= 0)
             {
-                strError = "El número de documento es incorrecto";
+                strError = "El numero de cuenta no es valido";
                 return false;
             }
-            if (strTitular.Trim() == "")
+            if (strTitular.Trim() == " ")
             {
                 strError = "El titular es incorrecto";
                 return false;
             }
-            if (fltSaldo <= 0)
+            if (fltSaldo < -fltLimSobreGiro)
             {
-                strError = "El saldo es incorrecto";
+                strError = "El saldo supera el limite de sobregiros ";
                 return false;
             }
             if (fltLimSobreGiro <= 0)
             {
-                strError = "El saldo es incorrecto";
+                strError = "El limite de sobregiro no es valido";
                 return false;
             }
-            if (strRepresLeg == null) return false;
+            if (strRepresLeg.Trim() == " ")
+            {
+                strError = "El representante legal no es valido";
+                return false;
+            }
 
             return true;
         }
@@ -296,13 +493,35 @@ namespace libTiposCtas
         #region Metodos privados
         private bool Validar()
         {
-            if (strFecCreac == null) return false;
-            if (intTipoDoc <= 0) return false;
-            if (intNroDcto <= 0) return false;
-            if (strTitular == null) return false;
-            if (fltSaldo <= 0) return false;
-            if (intMeses <= 0) return false;
-            if (fltPorcInt <= 0) return false;
+            if (intTipoDoc <= 0)
+            {
+                strError = "El tipo de documento no es valido";
+                return false;
+            }
+            if (intNroDcto <= 0)
+            {
+                strError = "El numero de cuenta no es valido";
+                return false;
+            }
+            if (strTitular.Trim() == " ")
+            {
+                strError = "El titular es incorrecto";
+                return false;
+            }
+            if (fltSaldo <= 0)
+            {
+                strError = "El saldo es un valor incorrecto ";
+                return false;
+            }
+            if (intMeses <= 0)
+            {
+                strError = "La cantidad de meses es incorrecto";
+                return false;
+            }
+            if (fltPorcInt <= 0 || fltPorcInt > 50)
+            {
+                strError = "El porcentaje de intres de CDT no es valido, debe ser menor al 50% y mayor a 0";
+            }
 
             return true;
         }
@@ -311,17 +530,66 @@ namespace libTiposCtas
         #region Metodos publicos
         public override bool Buscar(int nroCta)
         {
-            if (nroCta == 0)
-                return false;
+            try
+            {
+                if (nroCta <= 0)
+                {
+                    strError = "Número de cuenta nó válido";
+                    return false;
+                }
+                clsGenerales og = new clsGenerales();
+                List<string> datos = og.leerArchivo(rutaFile, nroCta);
+                if (datos.Count <= 0)
+                {
+                    strError = "No se encontró la cuenta CDT #" + nroCta;
+                    og = null;
+                    return false;
+                }
+                strFecCreac = datos[1];
+                intTipoDoc = int.Parse(datos[2]);
+                intNroCta = int.Parse(datos[3]);
+                strTitular = datos[4];
+                fltSaldo = float.Parse(datos[5]);
+                intMeses = int.Parse(datos[6]);
+                fltPorcInt = float.Parse(datos[7]);
 
-            return true;
+                return true;
+            }
+            catch
+            {
+
+                strError = "Error en consultar la cuenta CDT";
+                return false;
+            }
         }
         public override bool Crear()
         {
             if (!Validar())
                 return false;
+            try
+            {
+                clsGenerales og = new clsGenerales();
+                intNroCta = og.UltimoId(rutaFile) + 1;
+                if (intNroCta <= 0)
+                {
+                    strError = "Error en consultar cuenta CDT";
+                    return false;
+                }
+                strFecCreac = DateTime.Now.ToShortDateString();
+                string rgtro = intNroCta + ":" + strFecCreac + ":" + intTipoDoc + ":" + intNroDcto + ":" +
+                    strTitular + ":" + fltSaldo.ToString() + ":" + intMeses + ":" + fltPorcInt;
 
-            return true;
+                StreamWriter grabar = new StreamWriter(rutaFile, true);
+                grabar.WriteLine(rgtro);
+                grabar.Close();
+                return true;
+            }
+            catch (Exception)
+            {
+
+                strError = "Error en grabar";
+                return false;
+            }
         }
         #endregion
     }
