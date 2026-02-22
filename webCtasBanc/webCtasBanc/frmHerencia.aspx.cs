@@ -5,6 +5,9 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
+//Referencias locales
+using libTiposCtas;
+
 namespace webCtasBanc
 {
     public partial class frmHerencia : System.Web.UI.Page
@@ -109,6 +112,12 @@ namespace webCtasBanc
                 case 1:
                     intTipoCta = Convert.ToInt32(ddlTipoAhorro.SelectedValue);
                     fltPorcIntAhorr = Convert.ToSingle(txtPorIntAhorro.Text);
+                    clsAhorro oCtaAh = new clsAhorro(intTipoDoc, intNroDoc, strTitular, fltSaldo, intTipoCta, fltPorcIntAhorr);
+                    if (!oCtaAh.Crear())
+                    {
+                        Mensaje(oCtaAh.Error);
+                    }
+
                     break;
                 case 2:
                     

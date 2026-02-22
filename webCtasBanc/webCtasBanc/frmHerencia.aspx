@@ -12,11 +12,10 @@
             text-align: center;
         }
         .auto-style2 {
-            color: #660066;
+            color: #000000;
             font-family: "Times New Roman", Times, serif;
-        }
-        .auto-style3 {
-            height: 33px;
+            background-color: #CC99FF;
+            height: 39px;
         }
         .auto-style4 {
             width: 90%;
@@ -142,6 +141,29 @@
             width: 200px;
             text-align: right;
         }
+        .auto-style41 {
+            background-color: #CC99FF;
+        }
+        .auto-style42 {
+            height: 33px;
+            background-color: #CC99FF;
+        }
+        .auto-style44 {
+            width: 75%;
+            height: 33px;
+            background-color: #CC99FF;
+        }
+        .auto-style45 {
+            background-color: #CC99FF;
+            width: 267px;
+        }
+        .nuevoEstilo1 {
+            font-family: "Times New Roman";
+            font-size: medium;
+        }
+        .nuevoEstilo2 {
+            font-family: "Times New Roman";
+        }
     </style>
 </head>
 <body>
@@ -149,43 +171,45 @@
         <div>
             <table align="center" class="auto-style1">
                 <tr>
-                    <td class="auto-style2" colspan="2"><strong>CUENTAS BANCARIAS</strong></td>
-                </tr>
-                <tr>
-                    <td style="width: 75%">&nbsp;</td>
-                    <td>
-                        <asp:Button ID="btnCrear" runat="server" Text="Nuevo" OnClick="btnCrear_Click" />
+                    <td class="auto-style2" colspan="2">
+                        <h2><strong>CUENTAS BANCARIAS</strong></h2>
                     </td>
                 </tr>
                 <tr>
-                    <td class="auto-style3">
+                    <td class="auto-style44"></td>
+                    <td class="auto-style45">
+                        <asp:Button ID="btnCrear" runat="server" Text="Nuevo" OnClick="btnCrear_Click" CssClass="nuevoEstilo1" style="background-color: #33CCFF" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="auto-style42">
                         <asp:RadioButtonList ID="rblCuentas" runat="server" RepeatDirection="Horizontal" Width="80%" AutoPostBack="True" OnSelectedIndexChanged="rblCuentas_SelectedIndexChanged">
                             <asp:ListItem Selected="True" Value="opcAho">Ahorros</asp:ListItem>
                             <asp:ListItem Value="opcCte">Corriente</asp:ListItem>
                             <asp:ListItem Value="opcCdt">CDT</asp:ListItem>
                         </asp:RadioButtonList>
                     </td>
-                    <td class="auto-style3">
-                        <asp:Button ID="btnConsultar" runat="server" Text="Consultar" OnClick="btnConsultar_Click" />
+                    <td class="auto-style45">
+                        <asp:Button ID="btnConsultar" runat="server" Text="Consultar" OnClick="btnConsultar_Click" CssClass="nuevoEstilo2" style="background-color: #33CCFF" />
                     </td>
                 </tr>
                 <tr>
-                    <td>&nbsp;</td>
-                    <td>
-                        <asp:Button ID="btnLimpiar" runat="server" Text="Limpiar" OnClick="btnLimpiar_Click" />
+                    <td class="auto-style41">&nbsp;</td>
+                    <td class="auto-style45">
+                        <asp:Button ID="btnLimpiar" runat="server" Text="Limpiar" OnClick="btnLimpiar_Click" CssClass="nuevoEstilo2" style="background-color: #33CCFF" />
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="2">
+                    <td colspan="2" class="auto-style41">
                         <asp:Label ID="lblMsj" runat="server" Font-Bold="True" ForeColor="Red" Width="98%"></asp:Label>
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="2" style="text-align: center">&nbsp;</td>
+                    <td colspan="2" style="text-align: center" class="auto-style41">&nbsp;</td>
                 </tr>
                 <tr>
                     <td colspan="2">
-                        <asp:Panel ID="pnlGral" runat="server">
+                        <asp:Panel ID="pnlGral" runat="server" BackColor="#FFCCCC">
                             <table align="center" class="auto-style4">
                                 <tr>
                                     <td class="auto-style27">&nbsp;</td>
@@ -204,7 +228,7 @@
                                         <asp:Label ID="label" runat="server" Text="Fecha Creación:" CssClass="auto-style27"></asp:Label>
                                     </td>
                                     <td class="auto-style11">
-                                        <asp:Label ID="lblFecCreac" runat="server" BorderColor="#006666" BorderWidth="1px" Text="."></asp:Label>
+                                        <asp:Label ID="lblFecCreac" runat="server" BorderColor="#006666" BorderWidth="1px" Text="." Width="100px"></asp:Label>
                                     </td>
                                 </tr>
                                 <tr>
@@ -248,7 +272,7 @@
                 </tr>
                 <tr>
                     <td colspan="2">
-                        <asp:Panel ID="pnlAhorro" runat="server">
+                        <asp:Panel ID="pnlAhorro" runat="server" BackColor="#FFC1FF">
                             <table align="center" class="auto-style5">
                                 <tr>
                                     <td class="auto-style12"></td>
@@ -284,7 +308,7 @@
                 </tr>
                 <tr>
                     <td colspan="2">
-                        <asp:Panel ID="pnlCorriente" runat="server" Visible="False">
+                        <asp:Panel ID="pnlCorriente" runat="server" Visible="False" BackColor="#FFFFB7">
                             <table align="center" class="auto-style23">
                                 <tr>
                                     <td class="auto-style34">&nbsp;</td>
@@ -318,7 +342,7 @@
                 </tr>
                 <tr>
                     <td colspan="2">
-                        <asp:Panel ID="pnlBtns" runat="server">
+                        <asp:Panel ID="pnlBtns" runat="server" BackColor="#B3FFFF">
                             <table align="center" class="auto-style23">
                                 <tr>
                                     <td class="auto-style36">
@@ -329,6 +353,7 @@
                                     </td>
                                     <td>
                                         <asp:Button ID="btnDepositar" runat="server" Text="Depositar" />
+                                        <br />
                                         <asp:Button ID="btnRetirar" runat="server" Text="Retirar" />
                                     </td>
                                 </tr>
@@ -338,7 +363,7 @@
                 </tr>
                 <tr>
                     <td colspan="2" class="auto-style6">
-                        <asp:Panel ID="pnlCDT" runat="server" Visible="False">
+                        <asp:Panel ID="pnlCDT" runat="server" Visible="False" BackColor="#B0FFB0">
                             <table align="center" class="auto-style23">
                                 <tr>
                                     <td class="auto-style38">&nbsp;</td>
@@ -354,20 +379,18 @@
                                         <asp:TextBox ID="txtMesCDT" runat="server"></asp:TextBox>
                                     </td>
                                     <td class="auto-style40">
-                                        <asp:Label ID="lblValorCDT" runat="server" Text="Valor CDT:"></asp:Label>
+                                        <asp:Label ID="lblPorIntCDT" runat="server" style="text-align: right" Text="Porc. Interés:"></asp:Label>
                                     </td>
                                     <td>
-                                        <asp:TextBox ID="txtValorCDT" runat="server"></asp:TextBox>
+                                        <asp:TextBox ID="txtPorIntCDT" runat="server"></asp:TextBox>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="auto-style38">&nbsp;</td>
                                     <td class="auto-style39">
-                                        <asp:Label ID="lblPorIntCDT" runat="server" Text="Porc. Interés:" style="text-align: right"></asp:Label>
-                                    </td>
+                                        &nbsp;</td>
                                     <td style="width: 200px">
-                                        <asp:TextBox ID="txtPorIntCDT" runat="server"></asp:TextBox>
-                                    </td>
+                                        &nbsp;</td>
                                     <td>&nbsp;</td>
                                 </tr>
                                 <tr>

@@ -29,7 +29,7 @@ namespace libTiposCtas
             rutaFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Datos", "ctaAhorros.txt");
 
         }
-        public clsAhorro(int tipoDoc, int nroDoc, string titular, int valor, int tipoAhor, float porcint)
+        public clsAhorro(int tipoDoc, int nroDoc, string titular, float valor, int tipoAhor, float porcint)
         {
             intTipoDoc = tipoDoc;
             intNroDcto = nroDoc;
@@ -124,15 +124,15 @@ namespace libTiposCtas
             bool encontrado = false;
             float saldoAct, newSaldo;
 
-            List<string> lineas = File.ReadAllLines(rutaFile).ToList();
-            for (int i = 0; i < lineas.Count(); i++)
+            try
             {
-                string[] campos = lineas[i].Split(':');
-                if (campos.Length > 0 && campos[0].Equals(nroCta.ToString()))
+                List<string> lineas = File.ReadAllLines(rutaFile).ToList();
+                for (int i = 0; i < lineas.Count(); i++)
                 {
-                    saldoAct = Convert.ToSingle(campos[5]);
-                    if (saldoAct >= valor)
+                    string[] campos = lineas[i].Split(':');
+                    if (campos.Length > 0 && campos[0].Equals(nroCta.ToString()))
                     {
+                        saldoAct = Convert.ToSingle(campos[5]);
                         newSaldo = saldoAct + valor;
                         string newRgro = campos[0] + ":" + campos[1] + ":" + campos[2] + ":" + campos[3] + ":" +
                             campos[4] + ":" + newSaldo + ":" + campos[6] + ":" + campos[7];
@@ -141,47 +141,60 @@ namespace libTiposCtas
                         encontrado = true;
                         break;
                     }
-                    else
-                        strError = "Saldo insuficiente en la cuenta #" + nroCta;
                 }
+                if (!encontrado)
+                {
+                    strError = "No se emcontró la cuenta #" + nroCta;
+                }
+                return encontrado;
             }
-            if (!encontrado)
+            catch (Exception err)
             {
-                strError = "No se emcontró la cuenta #" + nroCta;
+
+                strError = err.Message;
+                return false;
             }
-            return encontrado;
         }
         public override bool Retiro(int nroCta, float valor)
         {
             bool encontrado = false;
             float saldoAct, newSaldo;
 
-            List<string> lineas = File.ReadAllLines(rutaFile).ToList();
-            for ( int i = 0; i < lineas.Count(); i ++)
+            try
             {
-                string[] campos = lineas[i].Split(':');
-                if (campos.Length > 0 && campos[0].Equals(nroCta.ToString()))
+                List<string> lineas = File.ReadAllLines(rutaFile).ToList();
+                for (int i = 0; i < lineas.Count(); i++)
                 {
-                    saldoAct = Convert.ToSingle(campos[5]);
-                    if (saldoAct >= valor)
+                    string[] campos = lineas[i].Split(':');
+                    if (campos.Length > 0 && campos[0].Equals(nroCta.ToString()))
                     {
-                        newSaldo = saldoAct - valor;
-                        string newRgro = campos[0] + ":" + campos[1] + ":" + campos[2] + ":" + campos[3] + ":" + 
-                            campos[4] + ":" + newSaldo + ":" + campos[6] + ":" + campos[7];
-                        lineas[i] = newRgro;
-                        File.WriteAllLines(rutaFile, lineas);
-                        encontrado = true;
-                        break;
+                        saldoAct = Convert.ToSingle(campos[5]);
+                        if (saldoAct >= valor)
+                        {
+                            newSaldo = saldoAct - valor;
+                            string newRgro = campos[0] + ":" + campos[1] + ":" + campos[2] + ":" + campos[3] + ":" +
+                                campos[4] + ":" + newSaldo + ":" + campos[6] + ":" + campos[7];
+                            lineas[i] = newRgro;
+                            File.WriteAllLines(rutaFile, lineas);
+                            encontrado = true;
+                            break;
+                        }
+                        else
+                            strError = "Saldo insuficiente en la cuenta #" + nroCta;
                     }
-                    else
-                        strError = "Saldo insuficiente en la cuenta #" + nroCta;
                 }
+                if (!encontrado)
+                {
+                    strError = "No se emcontró la cuenta #" + nroCta;
+                }
+                return encontrado;
             }
-            if (!encontrado)
+            catch (Exception err)
             {
-                strError = "No se emcontró la cuenta #" + nroCta;
+
+                strError = err.Message;
+                return false;
             }
-            return encontrado;
         }
         #endregion
 
@@ -338,15 +351,15 @@ namespace libTiposCtas
             bool encontrado = false;
             float saldoAct, newSaldo;
 
-            List<string> lineas = File.ReadAllLines(rutaFile).ToList();
-            for (int i = 0; i < lineas.Count(); i++)
+            try
             {
-                string[] campos = lineas[i].Split(':');
-                if (campos.Length > 0 && campos[0].Equals(nroCta.ToString()))
+                List<string> lineas = File.ReadAllLines(rutaFile).ToList();
+                for (int i = 0; i < lineas.Count(); i++)
                 {
-                    saldoAct = Convert.ToSingle(campos[5]);
-                    if (saldoAct >= valor)
+                    string[] campos = lineas[i].Split(':');
+                    if (campos.Length > 0 && campos[0].Equals(nroCta.ToString()))
                     {
+                        saldoAct = Convert.ToSingle(campos[5]);
                         newSaldo = saldoAct + valor;
                         string newRgro = campos[0] + ":" + campos[1] + ":" + campos[2] + ":" + campos[3] + ":" +
                             campos[4] + ":" + newSaldo + ":" + campos[6] + ":" + campos[7];
@@ -355,47 +368,60 @@ namespace libTiposCtas
                         encontrado = true;
                         break;
                     }
-                    else
-                        strError = "Saldo insuficiente en la cuenta #" + nroCta;
                 }
+                if (!encontrado)
+                {
+                    strError = "No se emcontró la cuenta #" + nroCta;
+                }
+                return encontrado;
             }
-            if (!encontrado)
+            catch (Exception err)
             {
-                strError = "No se emcontró la cuenta #" + nroCta;
+
+                strError = err.Message;
+                return false;
             }
-            return encontrado;
         }
         public override bool Retiro(int nroCta, float valor)
         {
             bool encontrado = false;
             float saldoAct, newSaldo;
 
-            List<string> lineas = File.ReadAllLines(rutaFile).ToList();
-            for ( int i = 0; i < lineas.Count(); i ++)
+            try
             {
-                string[] campos = lineas[i].Split(':');
-                if (campos.Length > 0 && campos[0].Equals(nroCta.ToString()))
+                List<string> lineas = File.ReadAllLines(rutaFile).ToList();
+                for (int i = 0; i < lineas.Count(); i++)
                 {
-                    saldoAct = Convert.ToSingle(campos[5]);
-                    if (saldoAct >= valor)
+                    string[] campos = lineas[i].Split(':');
+                    if (campos.Length > 0 && campos[0].Equals(nroCta.ToString()))
                     {
-                        newSaldo = saldoAct - valor;
-                        string newRgro = campos[0] + ":" + campos[1] + ":" + campos[2] + ":" + campos[3] + ":" + 
-                            campos[4] + ":" + newSaldo + ":" + campos[6] + ":" + campos[7];
-                        lineas[i] = newRgro;
-                        File.WriteAllLines(rutaFile, lineas);
-                        encontrado = true;
-                        break;
+                        saldoAct = Convert.ToSingle(campos[5]);
+                        if (saldoAct >= valor)
+                        {
+                            newSaldo = saldoAct - valor;
+                            string newRgro = campos[0] + ":" + campos[1] + ":" + campos[2] + ":" + campos[3] + ":" +
+                                campos[4] + ":" + newSaldo + ":" + campos[6] + ":" + campos[7];
+                            lineas[i] = newRgro;
+                            File.WriteAllLines(rutaFile, lineas);
+                            encontrado = true;
+                            break;
+                        }
+                        else
+                            strError = "Saldo insuficiente en la cuenta #" + nroCta;
                     }
-                    else
-                        strError = "Saldo insuficiente en la cuenta #" + nroCta;
                 }
+                if (!encontrado)
+                {
+                    strError = "No se emcontró la cuenta #" + nroCta;
+                }
+                return encontrado;
             }
-            if (!encontrado)
+            catch (Exception err)
             {
-                strError = "No se emcontró la cuenta #" + nroCta;
+
+                strError = err.Message;
+                return false;
             }
-            return encontrado;
         }
         #endregion
 
