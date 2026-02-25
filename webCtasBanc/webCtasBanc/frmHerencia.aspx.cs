@@ -13,7 +13,12 @@ namespace webCtasBanc
     public partial class frmHerencia : System.Web.UI.Page
     {
         #region vbles miembro - atributos
+        int intTipoDoc, intNroDoc, intTipoCta, intCantMes, intNroCta;
+        string strTitular, strRepres;
+        float fltSaldo, fltPorcIntAhorr, fltPorcIntCDT, fltCupoLim, fltVrTx;
+
         static int intTipo;
+
         #endregion
 
         #region metodos propios
@@ -98,37 +103,127 @@ namespace webCtasBanc
 
         protected void btnCrear_Click(object sender, EventArgs e)
         {
-            int intTipoDoc, intNroDoc, intTipoCta, intCantMes;
-            string strTitular, strRepres;
-            float fltSaldo, fltPorcIntAhorr, fltPorcIntCDT, fltCupoLim, fltVrTx;
-
-            intTipoDoc = Convert.ToInt32(ddlTipoDoc.SelectedValue);
-            intNroDoc = Convert.ToInt32(txtNroDoc.Text);
-            strTitular = txtTitular.Text;
-            fltSaldo = Convert.ToSingle(txtSaldo.Text);
-
-            switch (intTipo)
+            try
             {
-                case 1:
-                    intTipoCta = Convert.ToInt32(ddlTipoAhorro.SelectedValue);
-                    fltPorcIntAhorr = Convert.ToSingle(txtPorIntAhorro.Text);
-                    clsAhorro oCtaAh = new clsAhorro(intTipoDoc, intNroDoc, strTitular, fltSaldo, intTipoCta, fltPorcIntAhorr);
-                    if (!oCtaAh.Crear())
-                    {
-                        Mensaje(oCtaAh.Error);
-                    }
+                Mensaje(string.Empty);
 
-                    break;
-                case 2:
-                    
-                    break;
-                default:
-                    
-                    break;
+                intTipoDoc = Convert.ToInt32(ddlTipoDoc.SelectedValue);
+                intNroDoc = Convert.ToInt32(txtNroDoc.Text);
+                strTitular = txtTitular.Text;
+                fltSaldo = Convert.ToSingle(txtSaldo.Text);
+
+                switch (intTipo)
+                {
+                    case 1:
+                        intTipoCta = Convert.ToInt32(ddlTipoAhorro.SelectedValue);
+                        fltPorcIntAhorr = Convert.ToSingle(txtPorIntAhorro.Text);
+                        clsAhorro oCtaAh = new clsAhorro(intTipoDoc, intNroDoc, strTitular, fltSaldo, intTipoCta, fltPorcIntAhorr);
+                        if (!oCtaAh.Crear())
+                        {
+                            Mensaje(oCtaAh.Error);
+                            oCtaAh = null;
+                            return;
+                        }
+                        txtNroCta.Text = Convert.ToString(oCtaAh.NroCta);
+                        lblLimSobreG.Text = oCtaAh.FecCreac;
+
+                        Mensaje("Cuenta creada exitosamente");
+                        break;
+                    case 2:
+
+                        break;
+                    default:
+
+                        break;
+                }
+            }
+            catch (Exception err)
+            {
+                Mensaje(err.Message);
             }
         }
 
         protected void btnConsultar_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Mensaje(string.Empty);
+
+                intNroCta = Convert.ToInt32(txtNroCta.Text);
+                if (intNroCta < 0)
+                {
+                    Mensaje("Número de cuenta no válido");
+                    txtNroCta.Focus();
+                    return;
+                }
+
+                clsAhorro oAh = new clsAhorro();
+                if (!oAh.Buscar(intNroCta))
+                {
+                    Mensaje(oAh.Error);
+                    oAh = null;
+                    return;
+                }
+
+                lblFecCreac.Text = oAh.FecCreac;
+                ddlTipoDoc.SelectedValue = oAh.TipoDoc.ToString();
+                txtNroDoc.Text = oAh.NroDcto.ToString();
+                txtTitular.Text = oAh.Titular;
+                txtSaldo.Text = oAh.Saldo.ToString();
+                ddlTipoAhorro.SelectedValue = oAh.TipoAhor.ToString();
+                txtPorIntAhorro.Text = oAh.PorcIntAhor.ToString();
+
+                oAh = null;
+                Mensaje("Busqueda exitosa");
+            }
+            catch (Exception err)
+            {
+
+                Mensaje(err.Message);
+            }
+        }
+        protected void btnDepositar_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Mensaje(string.Empty);
+
+                intNroCta = Convert.ToInt32(txtNroCta.Text);
+                if (intNroCta < 0)
+                {
+                    Mensaje("Número de cuenta no válido");
+                    txtNroCta.Focus();
+                    return;
+                }
+                fltVrTx = Convert.ToSingle(txtVrTransac.Text);
+                if ( fltVrTx <= 0)
+                {
+                    Mensaje("Valor no valido");
+                    txtVrTransac.Focus();
+                    return;
+                }
+
+                clsAhorro oAh = new clsAhorro();
+
+                if (!oAh.Deposito(intNroCta, fltVrTx))
+                {
+                    Mensaje(oAh.Error);
+                    oAh = null;
+                    return;
+                }
+
+                btnConsultar_Click(null, null);
+                Mensaje("Deposito realizado con éxito");
+                oAh = null;
+            }
+            catch (Exception err)
+            {
+
+                Mensaje (err.Message);
+            }
+        }
+
+        protected void btnRetirar_Click(object sender, EventArgs e)
         {
 
         }

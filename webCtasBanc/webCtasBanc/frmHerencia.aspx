@@ -352,9 +352,9 @@
                                         <asp:TextBox ID="txtVrTransac" runat="server" style="margin-left: 0px"></asp:TextBox>
                                     </td>
                                     <td>
-                                        <asp:Button ID="btnDepositar" runat="server" Text="Depositar" />
+                                        <asp:Button ID="btnDepositar" runat="server" Text="Depositar" OnClick="btnDepositar_Click" />
                                         <br />
-                                        <asp:Button ID="btnRetirar" runat="server" Text="Retirar" />
+                                        <asp:Button ID="btnRetirar" runat="server" Text="Retirar" OnClick="btnRetirar_Click" />
                                     </td>
                                 </tr>
                             </table>

@@ -80,7 +80,7 @@ namespace libCuentaBanc
     {
         public int UltimoId(string ruta)
         {
-            int rpta = 0;
+            int rpta = -1;
             string carpeta = Path.GetDirectoryName(ruta);
             if (!Directory.Exists(carpeta))
                 Directory.CreateDirectory(carpeta);
