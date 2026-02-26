@@ -37,6 +37,7 @@ namespace libTiposCtas
             fltSaldo = valor;
             intTipoAhor = tipoAhor;
             fltporcInt = porcint;
+            rutaFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Datos", "ctaAhorros.txt");
         }
         #endregion
 
@@ -75,7 +76,7 @@ namespace libTiposCtas
                 }
                 strFecCreac = datos[1];
                 intTipoDoc = int.Parse(datos[2]);
-                intNroCta = int.Parse(datos[3]);
+                intNroDcto = int.Parse(datos[3]);
                 strTitular = datos[4];
                 fltSaldo = float.Parse(datos[5]);
                 intTipoAhor = int.Parse(datos[6]);
@@ -258,7 +259,7 @@ namespace libTiposCtas
             fltSaldo = 0;
             rutaFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Datos", "ctaCorriente.txt");
         }
-        public clsCorriente(int tipoDoc, int nroDoc, string titular, int valor, float LimSobreGiro, string repLeg)
+        public clsCorriente(int tipoDoc, int nroDoc, string titular, float valor, float LimSobreGiro, string repLeg)
         {
             intTipoDoc = tipoDoc;
             intNroDcto = nroDoc;
@@ -266,6 +267,7 @@ namespace libTiposCtas
             fltSaldo = valor;
             fltLimSobreGiro = LimSobreGiro;
             strRepresLeg = repLeg;
+            rutaFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Datos", "ctaCorriente.txt");
         }
         #endregion
 
@@ -302,7 +304,7 @@ namespace libTiposCtas
                 }
                 strFecCreac = datos[1];
                 intTipoDoc = int.Parse(datos[2]);
-                intNroCta = int.Parse(datos[3]);
+                intNroDcto = int.Parse(datos[3]);
                 strTitular = datos[4];
                 fltSaldo = float.Parse(datos[5]);
                 fltLimSobreGiro = float.Parse(datos[6]);
@@ -487,7 +489,7 @@ namespace libTiposCtas
             rutaFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Datos", "ctaCDT.txt");
         }
 
-        public clsCDT(int tipoDoc, int nroDoc, string titular, int valor, int cantMeses, float PorcInt)
+        public clsCDT(int tipoDoc, int nroDoc, string titular, float valor, int cantMeses, float PorcInt)
         {
             intTipoDoc = tipoDoc;
             intNroDcto = nroDoc;
@@ -495,6 +497,7 @@ namespace libTiposCtas
             fltSaldo = valor;
             intMeses = cantMeses;
             fltPorcInt = PorcInt;
+            rutaFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Datos", "ctaCDT.txt");
         }
         #endregion
 
@@ -573,7 +576,7 @@ namespace libTiposCtas
                 }
                 strFecCreac = datos[1];
                 intTipoDoc = int.Parse(datos[2]);
-                intNroCta = int.Parse(datos[3]);
+                intNroDcto = int.Parse(datos[3]);
                 strTitular = datos[4];
                 fltSaldo = float.Parse(datos[5]);
                 intMeses = int.Parse(datos[6]);

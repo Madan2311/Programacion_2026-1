@@ -125,14 +125,40 @@ namespace webCtasBanc
                             return;
                         }
                         txtNroCta.Text = Convert.ToString(oCtaAh.NroCta);
-                        lblLimSobreG.Text = oCtaAh.FecCreac;
+                        lblFecCreac.Text = oCtaAh.FecCreac;
 
                         Mensaje("Cuenta creada exitosamente");
                         break;
                     case 2:
+                        strRepres = txtRepres.Text;
+                        fltCupoLim = Convert.ToSingle(txtLimSobreG.Text);
+                        clsCorriente oCtaCorr = new clsCorriente(intTipoDoc, intNroDoc, strTitular, fltSaldo, fltCupoLim, strRepres);
+                        if (!oCtaCorr.Crear())
+                        {
+                            Mensaje(oCtaCorr.Error);
+                            oCtaCorr = null;
+                            return;
+                        }
 
+                        txtNroCta.Text = Convert.ToString(oCtaCorr.NroCta);
+                        lblFecCreac.Text = oCtaCorr.FecCreac;
+
+                        Mensaje("Cuenta creada exitosamente");
                         break;
                     default:
+                        intCantMes = Convert.ToInt32(txtMesCDT.Text);
+                        fltPorcIntCDT = Convert.ToSingle(txtPorIntCDT.Text);
+                        clsCDT oCtaCDT = new clsCDT(intTipoDoc, intNroDoc, strTitular, fltSaldo, intCantMes, fltPorcIntCDT);
+                        if (!oCtaCDT.Crear())
+                        {
+                            Mensaje(oCtaCDT.Error);
+                            oCtaCDT = null;
+                            return;
+                        }
+                        txtNroCta.Text = Convert.ToString(oCtaCDT.NroCta);
+                        lblFecCreac.Text = oCtaCDT.FecCreac;
+
+                        Mensaje("Cuenta creada exitosamente");
 
                         break;
                 }
@@ -189,6 +215,8 @@ namespace webCtasBanc
                 Mensaje(string.Empty);
 
                 intNroCta = Convert.ToInt32(txtNroCta.Text);
+                intTipoDoc = Convert.ToInt32(ddlTipoDoc.SelectedValue);
+
                 if (intNroCta < 0)
                 {
                     Mensaje("Número de cuenta no válido");
@@ -203,18 +231,37 @@ namespace webCtasBanc
                     return;
                 }
 
-                clsAhorro oAh = new clsAhorro();
-
-                if (!oAh.Deposito(intNroCta, fltVrTx))
+                switch (intTipo)
                 {
-                    Mensaje(oAh.Error);
-                    oAh = null;
-                    return;
+                    case 1:
+                        clsAhorro oAh = new clsAhorro();
+
+                        if (!oAh.Deposito(intNroCta, fltVrTx))
+                        {
+                            Mensaje(oAh.Error);
+                            oAh = null;
+                            return;
+                        }
+
+                        btnConsultar_Click(null, null);
+                        oAh = null;
+                        break;
+                    default:
+                        clsCorriente cCorr = new clsCorriente();
+
+                        if (!cCorr.Deposito(intNroCta, fltVrTx))
+                        {
+                            Mensaje(cCorr.Error);
+                            cCorr = null;
+                            return;
+                        }
+
+                        btnConsultar_Click(null, null);
+                        cCorr = null;
+                        break;
                 }
 
-                btnConsultar_Click(null, null);
                 Mensaje("Deposito realizado con éxito");
-                oAh = null;
             }
             catch (Exception err)
             {
@@ -225,7 +272,64 @@ namespace webCtasBanc
 
         protected void btnRetirar_Click(object sender, EventArgs e)
         {
+            try
+            {
+                Mensaje(string.Empty);
 
+                intNroCta = Convert.ToInt32(txtNroCta.Text);
+                intTipoDoc = Convert.ToInt32(ddlTipoDoc.SelectedValue);
+
+                if (intNroCta < 0)
+                {
+                    Mensaje("Número de cuenta no válido");
+                    txtNroCta.Focus();
+                    return;
+                }
+                fltVrTx = Convert.ToSingle(txtVrTransac.Text);
+                if (fltVrTx <= 0)
+                {
+                    Mensaje("Valor no valido");
+                    txtVrTransac.Focus();
+                    return;
+                }
+
+                switch (intTipo)
+                {
+                    case 1:
+                        clsAhorro oAh = new clsAhorro();
+
+                        if (!oAh.Retiro(intNroCta, fltVrTx))
+                        {
+                            Mensaje(oAh.Error);
+                            oAh = null;
+                            return;
+                        }
+
+                        btnConsultar_Click(null, null);
+                        oAh = null;
+                        break;
+                    default:
+                        clsCorriente cCorr = new clsCorriente();
+
+                        if (!cCorr.Retiro(intNroCta, fltVrTx))
+                        {
+                            Mensaje(cCorr.Error);
+                            cCorr = null;
+                            return;
+                        }
+
+                        btnConsultar_Click(null, null);
+                        cCorr = null;
+                        break;
+                }
+
+                Mensaje("Retiro realizado con éxito");
+            }
+            catch (Exception err)
+            {
+
+                Mensaje(err.Message);
+            }
         }
     }
 }

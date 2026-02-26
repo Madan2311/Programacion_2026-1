@@ -222,7 +222,7 @@
                                         <asp:Label ID="lblNroCta" runat="server" Text="Nro. Cuenta:" CssClass="auto-style27"></asp:Label>
                                     </td>
                                     <td class="auto-style19">
-                                        <asp:TextBox ID="txtNroCta" runat="server" ReadOnly="True" CssClass="auto-style27"></asp:TextBox>
+                                        <asp:TextBox ID="txtNroCta" runat="server" CssClass="auto-style27"></asp:TextBox>
                                     </td>
                                     <td class="auto-style20">
                                         <asp:Label ID="label" runat="server" Text="Fecha Creación:" CssClass="auto-style27"></asp:Label>
