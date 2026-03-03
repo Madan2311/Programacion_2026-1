@@ -15,6 +15,7 @@ namespace libTiposCtas
         private float fltporcInt;
         #endregion
 
+
         #region Constructores
         public clsAhorro()
         {
